@@ -1,4 +1,4 @@
-// main.js
+
 
 document.addEventListener('DOMContentLoaded', () => {
    
@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cartBadge.className = 'cart-badge';
     cartBadge.textContent = '0';
 
-    // Find the cart icon and append the badge
+    
     const cartIcon = document.querySelector('.navbar__cart');
     cartIcon.style.position = 'relative';
     cartBadge.style.position = 'absolute';
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let cartCount = 0;
 
-    // Add remove buttons to each product card
+    
     document.querySelectorAll('.product').forEach(product => {
         const removeBtn = document.createElement('button');
         removeBtn.textContent = 'Remove';
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
         product.appendChild(removeBtn);
     });
 
-    // Handle add to cart
+    
     document.querySelectorAll('.product__button').forEach((btn) => {
         btn.addEventListener('click', function () {
             if (btn.disabled) return;
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Handle remove from cart
+    
     document.querySelectorAll('.product__remove-button').forEach((btn) => {
         btn.addEventListener('click', function () {
             if (cartCount > 0) {
@@ -55,75 +55,35 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-
-const productsData = [
-    [
-        "Nike Phantom Gx ii Pro Fg",
-        157,
-        "/afbeeldingen/d.jpg",
-        "High-performance football boots for professionals.",
-        true
-    ],
-    [
-        "Adidas Predator Edge",
-        170,
-        "/afbeeldingen/foto2.webp",
-        "Control-enhancing football boots for precision play.",
-        false
-    ],
-    [
-        "Puma Future Z",
-        135,
-        "/afbeeldingen/shopping (1).webp",
-        "Dynamic football boots for agile players.",
-        true
-    ]
+const products = [
+  ["Nike Phantom Gx ii Pro Fg", 157, "schoen.jpg", "High-performance football boots for professionals.", true],
+  ["Adidas Predator Edge", 170, "foto2.webp", "Control-enhancing football boots for precision play.", false],
+  ["Puma Future Z", 145, "schoen2.webp", "Dynamic football boots for agile players.", true]
 ];
 
-document.addEventListener('DOMContentLoaded', () => {
-    const productsSection = document.querySelector('.products');
-    productsSection.innerHTML = '';
+const productsContainer = document.querySelector('.products');
 
-    productsData.forEach(product => {
-        const [name, price, img, desc, available] = product;
-        const article = document.createElement('article');
-        const productDiv = document.createElement('div');
-        productDiv.className = 'product' + (available ? '' : ' product--not-available');
+products.forEach(([title, price, image, description, available]) => {
+  const article = document.createElement('article');
+  const productDiv = document.createElement('div');
+  productDiv.classList.add('product');
+  if (!available) productDiv.classList.add('product--not-available');
 
-        const imgEl = document.createElement('img');
-        imgEl.className = 'product__img';
-        imgEl.src = img;
-        imgEl.alt = name;
+  productDiv.innerHTML = `
+    <img class="product__img" src="${image}" alt="${title}">
+    <h2 class="product__title">${title}</h2>
+    <p class="product__description">${description}</p>
+    <h3 class="product__price">$${price}</h3>
+    <button class="product__button ${!available ? 'product__button--disabled' : ''}" ${!available ? 'disabled' : ''}>
+      ${available ? 'Add to cart' : 'Not Available'}
+    </button>
+  `;
 
-        const titleEl = document.createElement('h2');
-        titleEl.className = 'product__title';
-        titleEl.textContent = name;
-
-        const subtitleEl = document.createElement('p');
-        subtitleEl.className = 'product__subtitle';
-        subtitleEl.textContent = available ? 'Available' : 'Not Available';
-
-        const descEl = document.createElement('p');
-        descEl.className = 'product__description';
-        descEl.textContent = desc;
-
-        const priceEl = document.createElement('h3');
-        priceEl.className = 'product__price';
-        priceEl.textContent = `$${price}`;
-
-        const btn = document.createElement('button');
-        btn.className = 'product__button' + (available ? '' : ' product__button--disabled');
-        btn.textContent = available ? 'Add to cart' : 'Not Available';
-        if (!available) btn.disabled = true;
-
-        productDiv.appendChild(imgEl);
-        productDiv.appendChild(titleEl);
-        productDiv.appendChild(subtitleEl);
-        productDiv.appendChild(descEl);
-        productDiv.appendChild(priceEl);
-        productDiv.appendChild(btn);
-
-        article.appendChild(productDiv);
-        productsSection.appendChild(article);
-    });
+  article.appendChild(productDiv);
+  productsContainer.appendChild(article);
 });
+
+
+
+
+
